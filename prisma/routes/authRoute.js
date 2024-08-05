@@ -1,22 +1,15 @@
 import express from "express";
-import adminController from "../controllers/authControllers/adminController.js";
-import pegawaiController from "../controllers/authControllers/pegawaiController.js";
-import pemilikController from "../controllers/authControllers/pemilikController.js";
+import authControllers from "../controllers/authControllers/authController.js";
 
 const router = express.Router();
 
-// Routes untuk admin
-router.post("/admin/login", adminController.AdminLogin);
+// Routes untuk login
+router.post("/auth/login", authControllers.handleLogin);
 
-// Routes untuk pegawai
-router.post("/pegawai/login", pegawaiController.PegawaiLogin);
+// Routes untuk pendaftaran pemilik
+router.post("/auth/register", authControllers.PemilikRegister);
 
-// Routes untuk pemilik
-router.post("/pemilik/register", pemilikController.PemilikRegister);
-router.post("/pemilik/login", pemilikController.PemilikLogin);
-router.post(
-  "/pemilik/forgot-password",
-  pemilikController.PemilikForgotPassword
-);
+// Routes untuk pemilik forgot-password
+router.post("/auth/forgot-password", authControllers.PemilikForgotPassword);
 
 export default router;

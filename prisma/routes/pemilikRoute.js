@@ -72,6 +72,13 @@ router.delete(
 // Routes untuk Pemilik
 //GET -> READ
 router.post(
+  "/pemilik/pemilik",
+  authenticateToken,
+  isOwner,
+  dataPemilikController.pemilikCRUDDataPemilik
+);
+//GET -> READ BY ID
+router.post(
   "/pemilik/pemilik/:id",
   authenticateToken,
   isOwner,

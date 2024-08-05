@@ -43,9 +43,9 @@ router.delete(
 );
 
 // Routes untuk Pegawai
-// POST -> CREATE (Jika dibutuhkan)
+// POST -> READ BY ID
 router.post(
-  "/pegawai/pegawai/:id",
+  "/pegawai/pegawai",
   authenticateToken,
   isEmployee,
   dataPegawaiController.pegawaiCRUDDataPegawai
@@ -62,7 +62,7 @@ router.put(
 // Routes untuk Pemilik
 // GET -> READ
 router.get(
-  "/pemilik/pegawai",
+  "/pemilik/pegawai/:id",
   authenticateToken,
   isOwner,
   dataPegawaiController.PemilikReadPegawai

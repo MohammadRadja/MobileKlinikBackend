@@ -3,43 +3,46 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const hewanController = {
-  // Admin: CRUD semua tabel
+  /**
+   * Admin: CRUD operations for all tables
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   */
   adminCRUDHewan: async (req, res) => {
     try {
-      // Pastikan user memiliki peran admin
       const { user } = req;
-      if (user.role !== "admin") {
+      // Ensure user has admin role
+      if (user.jabatan !== "admin") {
         return res
           .status(403)
           .json({ success: false, message: "Unauthorized access" });
       }
 
-      // Destructure action dan data dari req.body
       const { action, data } = req.body;
-      console.log("Data diterima:", data); // Log data yang diterima
+      console.log("Data diterima:", req.body);
       let result;
 
       switch (action) {
         case "create":
-          // Validasi input data
+          // Validate input data
           if (
-            !data.id_pemilik ||
+            !data.id_user ||
             !data.nama_hewan ||
             !data.jenis_hewan ||
             data.umur == null ||
             data.berat == null ||
             !data.jenis_kelamin
           ) {
-            console.log("Missing or invalid required fields", data); // Log untuk detail lebih lanjut
+            console.log("Missing or invalid required fields", data);
             return res
               .status(400)
               .json({ success: false, message: "Missing required fields" });
           }
 
-          // Proses pembuatan data baru
+          // Create new data
           result = await prisma.hewan.create({
             data: {
-              id_pemilik: data.id_pemilik,
+              id_user: data.id_user,
               nama_hewan: data.nama_hewan,
               jenis_hewan: data.jenis_hewan,
               umur: data.umur,
@@ -55,21 +58,25 @@ const hewanController = {
               id_hewan: "asc",
             },
             include: {
-              pemilik: true, // Assuming the relation name is 'pemilik'
+              user: true,
             },
           });
           break;
 
         case "update":
-          // Extract valid fields for update
-          const { id_hewan, ...updateData } = data;
+          const { id_hewan, id_user, ...updateData } = data; // Ambil id_user dan data lainnya
 
-          // Update data including relation
           result = await prisma.hewan.update({
             where: { id_hewan },
-            data: updateData,
+            data: {
+              ...updateData, // Sertakan semua data kecuali id_user
+              // Hubungkan ke pengguna menggunakan id_user
+              user: {
+                connect: { id_user }, // Pastikan menggunakan id_user dari data
+              },
+            },
             include: {
-              pemilik: true,
+              user: true,
             },
           });
           break;
@@ -88,16 +95,23 @@ const hewanController = {
 
       return res.status(200).json({ success: true, data: result });
     } catch (error) {
-      console.error("Error in adminCRUDHewan:", error);
+      console.error("CRUD Hewan from Admin - Response status: 500");
+      console.error("CRUD Hewan from Admin - Response body:", error.message);
       return res.status(500).json({ success: false, message: error.message });
     }
   },
 
-  // Pegawai: CRUD semua tabel kecuali admin
+  /**
+   * Pegawai: CRUD operations except for admin table
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   */
   pegawaiCRUDHewan: async (req, res) => {
     try {
       const { user } = req;
-      if (user.role !== "pegawai") {
+
+      // Ensure user has pegawai role
+      if (user.jabatan !== "pegawai") {
         return res
           .status(403)
           .json({ success: false, message: "Unauthorized access" });
@@ -105,11 +119,12 @@ const hewanController = {
 
       const { action, data } = req.body;
       let result;
+
       switch (action) {
         case "create":
-          // Validasi input data
+          // Validate input data
           if (
-            !data.id_pemilik ||
+            !data.id_user ||
             !data.nama_hewan ||
             !data.jenis_hewan ||
             data.umur == null ||
@@ -121,10 +136,10 @@ const hewanController = {
               .json({ success: false, message: "Missing required fields" });
           }
 
-          // Proses pembuatan data baru
+          // Create new data
           result = await prisma.hewan.create({
             data: {
-              id_pemilik: data.id_pemilik,
+              id_user: data.id_user,
               nama_hewan: data.nama_hewan,
               jenis_hewan: data.jenis_hewan,
               umur: data.umur,
@@ -132,17 +147,18 @@ const hewanController = {
               jenis_kelamin: data.jenis_kelamin,
             },
             include: {
-              pemilik: true,
+              user: true,
             },
           });
           break;
+
         case "read":
           result = await prisma.hewan.findMany({
             orderBy: {
               id_hewan: "asc",
             },
             include: {
-              pemilik: true,
+              user: true,
             },
           });
           break;
@@ -150,41 +166,36 @@ const hewanController = {
         case "update":
           const {
             id_hewan: idHewanToUpdate,
-            id_pemilik: idPemilikToUpdate,
+            id_user: iduserToUpdate,
             ...updateDataPegawai
-          } = data; // Extract id_hewan and id_pemilik from data
+          } = data;
 
-          const updatePayloadPegawai = {
+          result = await prisma.hewan.update({
             where: { id_hewan: idHewanToUpdate },
             data: {
               ...updateDataPegawai,
-              pemilik: {
-                connect: { id_pemilik: idPemilikToUpdate },
+              user: {
+                connect: { id_user: iduserToUpdate },
               },
             },
             include: {
-              pemilik: true,
+              user: true,
             },
-          };
-
-          try {
-            result = await prisma.hewan.update(updatePayloadPegawai);
-            console.log("Update Hewan successful:", result);
-          } catch (error) {
-            console.error("Update Hewan failed:", error);
-            throw new Error("Failed to update Hewan");
-          }
+          });
           break;
+
         case "delete":
           result = await prisma.hewan.delete({
             where: { id_hewan: data.id_hewan },
           });
           break;
+
         default:
           return res
             .status(400)
             .json({ success: false, message: "Invalid action" });
       }
+
       return res.status(200).json({ success: true, data: result });
     } catch (error) {
       console.error("Error in pegawaiCRUDHewan:", error);
@@ -192,32 +203,33 @@ const hewanController = {
     }
   },
 
-  // Pemilik: Hanya dapat melihat data
-  pemilikReadHewan: async (req, res) => {
+  /**
+   * Pemilik: Only allowed to read data
+   * @param {object} req - The request object
+   * @param {object} res - The response object
+   */
+  pemilikCRUDHewan: async (req, res) => {
     try {
       const { user } = req;
-      console.log("User role:", user.role); // Log role user
-      console.log("Owner ID", user.id_pemilik); // Log ID user
 
-      // Validasi role user
-      if (user.role !== "pemilik") {
+      // Ensure user has pemilik role
+      if (user.jabatan !== "pemilik") {
         return res
           .status(403)
           .json({ success: false, message: "Unauthorized access" });
       }
-      const idPemilik = parseInt(req.params.id, 10);
+
+      const idPemilik = user.id_user || ""; // Replace with appropriate logic if needed
       if (!idPemilik) {
-        console.log("Missing id_pemilik in user object.");
+        console.log("Missing idPemilik in user object.");
         return res
           .status(400)
           .json({ success: false, message: "ID pemilik tidak ditemukan." });
       }
 
       const { action, data } = req.body;
-      console.log("Action:", action); // Log action
-      console.log("Data diterima:", data); // Log data request
 
-      // Validasi action
+      // Ensure action is present
       if (!action) {
         console.log("Action is missing.");
         return res
@@ -227,26 +239,26 @@ const hewanController = {
 
       switch (action) {
         case "read":
-          // Mencari pemilik
-          const pemilik = await prisma.pemilik.findUnique({
-            where: { id_pemilik: idPemilik },
+          // Find user
+          const user = await prisma.user.findUnique({
+            where: { id_user: idPemilik },
           });
 
-          if (!pemilik) {
+          if (!user) {
             console.log("Pemilik not found for ID:", idPemilik);
             return res
               .status(404)
               .json({ success: false, message: "Pemilik not found." });
           }
 
-          console.log("Fetching hewan for id_pemilik:", idPemilik);
+          // Fetch hewan for the pemilik
           const hewanResult = await prisma.hewan.findMany({
             orderBy: {
               id_hewan: "asc",
             },
-            where: { id_pemilik: idPemilik },
+            where: { id_user: idPemilik },
             include: {
-              pemilik: true,
+              user: true,
             },
           });
 
@@ -260,7 +272,7 @@ const hewanController = {
           return res.status(200).json({ success: true, data: hewanResult });
 
         default:
-          console.log("Invalid action:", action); // Log invalid action
+          console.log("Invalid action:", action);
           return res
             .status(400)
             .json({ success: false, message: "Invalid action" });

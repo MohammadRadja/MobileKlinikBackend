@@ -78,5 +78,11 @@ router.post(
   isOwner,
   rekamMedisController.pemilikReadRekamMedis
 );
-
+//PUT -> UPDATE
+router.put(
+  "/pemilik/rekammedis/:id",
+  authenticateToken,
+  isEmployee,
+  rekamMedisController.pegawaiCRUDRekamMedis
+);
 export default router;

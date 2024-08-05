@@ -77,7 +77,7 @@ router.put(
 );
 // DELETE
 router.delete(
-  "/pegawai/resep",
+  "/pegawai/resep/:id",
   logRequest,
   authenticateToken,
   isEmployee,

@@ -7,7 +7,7 @@ const dataPegawaiController = {
     try {
       // Pastikan user memiliki peran pegawai
       const { user } = req;
-      if (user.role !== "admin") {
+      if (user.jabatan !== "admin") {
         return res
           .status(403)
           .json({ success: false, message: "Unauthorized access" });
@@ -20,7 +20,7 @@ const dataPegawaiController = {
 
       switch (action) {
         case "create":
-          const existUsername = await prisma.pegawai.findFirst({
+          const existUsername = await prisma.user.findFirst({
             where: {
               username: data.username,
             },
@@ -33,35 +33,48 @@ const dataPegawaiController = {
             return;
           }
           const hash = await bcrypt.hash(data.password, 10);
-          result = await prisma.pegawai.create({
+          result = await prisma.user.create({
             data: {
               username: data.username,
               password: hash,
               jabatan: data.jabatan,
               alamat: data.alamat,
               no_telp: data.no_telp,
+              email: data.email,
             },
           });
           break;
 
         case "read":
-          result = await prisma.pegawai.findMany({
+          result = await prisma.user.findMany({
+            where: {
+              jabatan: "pegawai",
+            },
             orderBy: {
-              id_pegawai: "asc", // Urutkan berdasarkan id_pemilik dalam urutan naik (ascending)
+              id_user: "asc",
             },
           });
           break;
 
         case "update":
-          result = await prisma.pegawai.update({
-            where: { id_pegawai: data.id_pegawai },
-            data: { ...data },
+          // Cek apakah password perlu dihash
+          let updateData = { ...data };
+          if (data.password) {
+            const hash = await bcrypt.hash(data.password, 10);
+            updateData.password = hash; // Mengupdate password yang sudah dihash
+          }
+
+          result = await prisma.user.update({
+            where: { id_user: data.id_user },
+            data: updateData,
           });
+          console.log("Update Pegawai - Response status: 200");
+          console.log("Update Pegawai - Response body:", result);
           break;
 
         case "delete":
-          result = await prisma.pegawai.delete({
-            where: { id_pegawai: data.id_pegawai },
+          result = await prisma.user.delete({
+            where: { id_user: data.id_user },
           });
           break;
         default:
@@ -71,11 +84,8 @@ const dataPegawaiController = {
       }
       return res.status(200).json({ success: true, data: result });
     } catch (error) {
-      console.error("Delete Pegawai from Admin - Response status: 500");
-      console.error(
-        "Delete Pegawai from Admin - Response body:",
-        error.message
-      );
+      console.error("CRUD Pegawai from Admin - Response status: 500");
+      console.error("CRUD Pegawai from Admin - Response body:", error.message);
       return res.status(500).json({ success: false, message: error.message });
     }
   },
@@ -86,56 +96,53 @@ const dataPegawaiController = {
     try {
       const { user } = req;
       console.log("User:", user);
-      console.log("User role:", user.role);
-
-      // Memastikan user adalah pegawai
-      if (user.role !== "pegawai") {
+      console.log("User jabatan:", user.jabatan);
+      if (user.jabatan !== "pegawai") {
         return res
           .status(403)
           .json({ success: false, message: "Unauthorized access" });
       }
 
-      const idPegawai = user.id_pegawai; // Ambil ID dari user yang sudah terautentikasi
+      const idPegawai = user.id_user || ""; // Replace with appropriate logic if needed
       const { action, data } = req.body;
-      console.log("Action:", action);
+      console.log("Action:", action); // Log data yang diterima
       console.log("Data diterima:", data);
-      console.log("ID pegawai yang digunakan:", idPegawai);
+      console.log("ID Pegawai yang digunakan:", idPegawai);
       let result;
 
       switch (action) {
         case "read":
-          console.log("Fetching data for pegawai ID:", idPegawai);
-          result = await prisma.pegawai.findUnique({
-            where: { id_pegawai: idPegawai }, // Menggunakan id_pegawai dari user yang terautentikasi
+          console.log("GET ID Pegawai:", idPegawai);
+          result = await prisma.user.findUnique({
+            where: { id_user: idPegawai },
           });
           if (!result) {
-            console.log("Pegawai not found for ID:", idPegawai);
+            console.log("ID Pegawai tidak ditemukan:", idPemilik);
             return res
               .status(404)
-              .json({ success: false, message: "Pegawai not found." });
+              .json({ success: false, message: "Pegawai tidak ditemukan." });
           }
           break;
 
         case "update":
-          console.log("Updating data for pegawai ID:", idPegawai);
+          console.log("Updating data for Pegawai ID:", idPegawai);
           if (!data) {
-            console.log("Missing data in request body:", data);
+            console.log("Missing data to update in request body:", data);
             return res
               .status(400)
-              .json({ success: false, message: "Data pegawai tidak lengkap." });
+              .json({ success: false, message: "Data Pegawai tidak lengkap." });
           }
 
-          // Hapus id_pegawai dari data yang akan diupdate
-          const { id_pegawai, password, ...updateData } = data;
+          const { id_user, password, ...updateData } = data;
 
           // Hash password jika ada
           if (password) {
             updateData.password = await bcrypt.hash(password, 10);
           }
 
-          result = await prisma.pegawai.update({
-            where: { id_pegawai: idPegawai }, // Gunakan id dari parameter URL
-            data: { ...updateData }, // Kirim data tanpa id_pegawai
+          result = await prisma.user.update({
+            where: { id_user: idPegawai },
+            data: { ...updateData },
           });
           console.log("Update successful:", result);
           break;
@@ -160,7 +167,7 @@ const dataPegawaiController = {
     try {
       // Pastikan user memiliki peran pemilik
       const { user } = req;
-      if (user.role !== "pemilik") {
+      if (user.jabatan !== "pemilik") {
         return res
           .status(403)
           .json({ success: false, message: "Unauthorized access" });
@@ -175,7 +182,7 @@ const dataPegawaiController = {
         case "read":
           result = await prisma.pegawai.findMany({
             orderBy: {
-              id_pegawai: "asc", // Urutkan berdasarkan id_pemilik dalam urutan naik (ascending)
+              id_user: "asc", // Urutkan berdasarkan id_pemilik dalam urutan naik (ascending)
             },
           });
           break;

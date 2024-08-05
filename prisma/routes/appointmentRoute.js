@@ -70,8 +70,22 @@ router.delete(
 );
 
 // Routes untuk Pemilik
-router.get(
+router.post(
   "/pemilik/appointment",
+  authenticateToken,
+  isOwner,
+  appointmentController.pemilikCRUDAppointment
+);
+//PUT -> UPDATE
+router.put(
+  "/pemilik/appointment/:id",
+  authenticateToken,
+  isOwner,
+  appointmentController.pemilikCRUDAppointment
+);
+//DELETE
+router.delete(
+  "/pemilik/appointment/:id",
   authenticateToken,
   isOwner,
   appointmentController.pemilikCRUDAppointment

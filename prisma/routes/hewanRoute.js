@@ -67,7 +67,7 @@ router.post(
 );
 
 // GET - READ
-router.get(
+router.post(
   "/pegawai/hewan",
   logRequest,
   authenticateToken,
@@ -100,6 +100,6 @@ router.post(
   logRequest,
   authenticateToken,
   isOwner,
-  hewanController.pemilikReadHewan
+  hewanController.pemilikCRUDHewan
 );
 export default router;

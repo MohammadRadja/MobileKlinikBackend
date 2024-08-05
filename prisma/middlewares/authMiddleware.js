@@ -6,29 +6,12 @@ const prisma = new PrismaClient();
 dotenv.config();
 
 export const generateToken = (user) => {
-  let userId;
-  let username;
-  let role;
-
-  if (user.id_admin) {
-    userId = user.id_admin;
-    username = user.username;
-    role = user.jabatan; // Menyertakan role dari jabatan_admin
-  } else if (user.id_pegawai) {
-    userId = user.id_pegawai;
-    username = user.nama_pegawai;
-    role = user.jabatan; // Menyertakan role dari jabatan_pegawai
-  } else if (user.id_pemilik) {
-    userId = user.id_pemilik;
-    username = user.nama_pemilik;
-    role = user.jabatan; // Menyertakan role dari jabatan_pemilik
-  }
-
+  console.log("User:", user);
   return jwt.sign(
     {
-      id: userId,
-      username: username,
-      role: role, // Menambahkan role ke payload JWT
+      id: user.id_user,
+      username: user.username,
+      role: user.jabatan,
     },
     process.env.JWT_SECRET,
     {
@@ -51,36 +34,18 @@ export const authenticateToken = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Decoded JWT:", decoded);
 
-    let user;
-    let role;
-    if (decoded.role === "admin") {
-      user = await prisma.admin.findFirst({
-        where: { id_admin: decoded.id },
-      });
-      role = "admin";
-    } else if (decoded.role === "pegawai") {
-      user = await prisma.pegawai.findFirst({
-        where: { id_pegawai: decoded.id },
-      });
-      role = "pegawai";
-    } else if (decoded.role === "pemilik") {
-      user = await prisma.pemilik.findFirst({
-        where: { id_pemilik: decoded.id },
-      });
-      role = "pemilik";
-    }
+    const user = await prisma.user.findUnique({
+      where: {
+        id_user: decoded.id,
+      },
+    });
 
     if (!user) {
-      console.error(
-        `No user found for role: ${decoded.role} with username: ${decoded.username}`
-      );
-      return res
-        .status(403)
-        .json({ success: false, message: "Invalid user role" });
+      console.error(`No user found with id: ${decoded.id}`);
+      return res.status(403).json({ success: false, message: "Invalid user" });
     }
 
-    req.user = { ...user, role: decoded.role };
-    console.log("Authenticated user:", req.user);
+    req.user = user;
     next();
   } catch (error) {
     console.error("Error in token verification:", error);
@@ -93,23 +58,20 @@ Admin
 export const isAdmin = (req, res, next) => {
   const user = req.user;
 
-  // Pastikan req.user dan req.user.role tidak undefined atau null
-  if (!user || !user.role) {
+  if (!user || !user.jabatan) {
     return res
       .status(403)
       .json({ message: "Forbidden: Admin access required" });
   }
 
-  console.log("User role in isAdmin:", user.role); // Logging role
+  console.log("User role in isAdmin:", user.jabatan); // Logging role
 
-  if (user.role !== "admin") {
+  if (user.jabatan !== "admin") {
     return res.status(401).json({
       success: false,
       message: "Admin Access Only. User is not authorized as admin.",
     });
   }
-
-  // Jika semua validasi berhasil, lanjutkan ke middleware atau handler berikutnya
   next();
 };
 
@@ -120,15 +82,15 @@ export const isEmployee = (req, res, next) => {
   const user = req.user;
 
   // Pastikan req.user dan req.user.role tidak undefined atau null
-  if (!user || !user.role) {
+  if (!user || !user.jabatan) {
     return res
       .status(403)
       .json({ message: "Forbidden: Pegawai access required" });
   }
 
-  console.log("User role in isEmployee:", user.role); // Logging role
+  console.log("User role in isEmployee:", user.jabatan); // Logging role
 
-  if (user.role !== "pegawai") {
+  if (user.jabatan !== "pegawai") {
     return res.status(401).json({
       success: false,
       message: "Pegawai Access Only. User is not authorized as Pegawai.",
@@ -138,23 +100,22 @@ export const isEmployee = (req, res, next) => {
   // Jika semua validasi berhasil, lanjutkan ke middleware atau handler berikutnya
   next();
 };
-
 /* 
 Pemilik
 */
 export const isOwner = (req, res, next) => {
   const user = req.user;
 
-  // Pastikan req.user dan req.user.role tidak undefined atau null
-  if (!user || !user.role) {
+  // Pastikan req.user dan req.user.jabatan tidak undefined atau null
+  if (!user || !user.jabatan) {
     return res
       .status(403)
-      .json({ message: "Forbidden: Pegawai access required" });
+      .json({ message: "Forbidden: Pemilik access required" });
   }
 
-  console.log("User role in isOwner:", user.role); // Logging role
+  console.log("User jabatan in isOwner:", user.jabatan); // Logging role
 
-  if (user.role !== "pemilik") {
+  if (user.jabatan !== "pemilik") {
     return res.status(401).json({
       success: false,
       message: "Pemilik Access Only. User is not authorized as Pemilik.",
