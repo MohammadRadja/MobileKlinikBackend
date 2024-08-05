@@ -24,7 +24,7 @@ router.post(
   logRequest,
   authenticateToken,
   isAdmin,
-  resepController.adminCRUDResep
+  resepController.adminCRUDResep,
 );
 // GET
 router.get(
@@ -32,7 +32,7 @@ router.get(
   logRequest,
   authenticateToken,
   isAdmin,
-  resepController.adminCRUDResep
+  resepController.adminCRUDResep,
 );
 // PUT
 router.put(
@@ -40,14 +40,14 @@ router.put(
   logRequest,
   authenticateToken,
   isAdmin,
-  resepController.adminCRUDResep
+  resepController.adminCRUDResep,
 );
 router.delete(
   "/admin/resep/:id",
   logRequest,
   authenticateToken,
   isAdmin,
-  resepController.adminCRUDResep
+  resepController.adminCRUDResep,
 );
 
 // Routes untuk Pegawai
@@ -57,7 +57,7 @@ router.post(
   logRequest,
   authenticateToken,
   isEmployee,
-  resepController.pegawaiCRUDResep
+  resepController.pegawaiCRUDResep,
 );
 // GET
 router.post(
@@ -65,7 +65,7 @@ router.post(
   logRequest,
   authenticateToken,
   isEmployee,
-  resepController.pegawaiCRUDResep
+  resepController.pegawaiCRUDResep,
 );
 // PUT
 router.put(
@@ -73,7 +73,7 @@ router.put(
   logRequest,
   authenticateToken,
   isEmployee,
-  resepController.pegawaiCRUDResep
+  resepController.pegawaiCRUDResep,
 );
 // DELETE
 router.delete(
@@ -81,7 +81,7 @@ router.delete(
   logRequest,
   authenticateToken,
   isEmployee,
-  resepController.pegawaiCRUDResep
+  resepController.pegawaiCRUDResep,
 );
 
 // Routes untuk Pemilik
@@ -91,7 +91,7 @@ router.post(
   logRequest,
   authenticateToken,
   isOwner,
-  resepController.pemilikReadResep
+  resepController.pemilikReadResep,
 );
 
 export default router;

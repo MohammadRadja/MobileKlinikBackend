@@ -15,28 +15,28 @@ router.post(
   "/admin/appointment",
   authenticateToken,
   isAdmin,
-  appointmentController.adminCRUDAppointment
+  appointmentController.adminCRUDAppointment,
 );
 //GET -> READ
 router.get(
   "/admin/appointment",
   authenticateToken,
   isAdmin,
-  appointmentController.adminCRUDAppointment
+  appointmentController.adminCRUDAppointment,
 );
 //PUT -> UPDATE
 router.put(
   "/admin/appointment/:id",
   authenticateToken,
   isAdmin,
-  appointmentController.adminCRUDAppointment
+  appointmentController.adminCRUDAppointment,
 );
 //DELETE
 router.delete(
   "/admin/appointment/:id",
   authenticateToken,
   isAdmin,
-  appointmentController.adminCRUDAppointment
+  appointmentController.adminCRUDAppointment,
 );
 
 // Routes untuk Pegawai
@@ -45,28 +45,28 @@ router.post(
   "/pegawai/appointment",
   authenticateToken,
   isEmployee,
-  appointmentController.pegawaiCRUDAppointment
+  appointmentController.pegawaiCRUDAppointment,
 );
 //GET -> READ
 router.post(
   "/pegawai/appointment",
   authenticateToken,
   isEmployee,
-  appointmentController.pegawaiCRUDAppointment
+  appointmentController.pegawaiCRUDAppointment,
 );
 //PUT -> UPDATE
 router.put(
   "/pegawai/appointment/:id",
   authenticateToken,
   isEmployee,
-  appointmentController.pegawaiCRUDAppointment
+  appointmentController.pegawaiCRUDAppointment,
 );
 //DELETE
 router.delete(
   "/pegawai/appointment/:id",
   authenticateToken,
   isEmployee,
-  appointmentController.pegawaiCRUDAppointment
+  appointmentController.pegawaiCRUDAppointment,
 );
 
 // Routes untuk Pemilik
@@ -74,21 +74,21 @@ router.post(
   "/pemilik/appointment",
   authenticateToken,
   isOwner,
-  appointmentController.pemilikCRUDAppointment
+  appointmentController.pemilikCRUDAppointment,
 );
 //PUT -> UPDATE
 router.put(
   "/pemilik/appointment/:id",
   authenticateToken,
   isOwner,
-  appointmentController.pemilikCRUDAppointment
+  appointmentController.pemilikCRUDAppointment,
 );
 //DELETE
 router.delete(
   "/pemilik/appointment/:id",
   authenticateToken,
   isOwner,
-  appointmentController.pemilikCRUDAppointment
+  appointmentController.pemilikCRUDAppointment,
 );
 
 export default router;

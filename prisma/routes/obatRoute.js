@@ -15,28 +15,28 @@ router.post(
   "/admin/obat",
   authenticateToken,
   isAdmin,
-  obatController.adminCRUDObat
+  obatController.adminCRUDObat,
 );
 //GET -> READ
 router.get(
   "/admin/obat",
   authenticateToken,
   isAdmin,
-  obatController.adminCRUDObat
+  obatController.adminCRUDObat,
 );
 //PUT -> UPDATE
 router.put(
   "/admin/obat/:id",
   authenticateToken,
   isAdmin,
-  obatController.adminCRUDObat
+  obatController.adminCRUDObat,
 );
 //DELETE
 router.delete(
   "/admin/obat/:id",
   authenticateToken,
   isAdmin,
-  obatController.adminCRUDObat
+  obatController.adminCRUDObat,
 );
 
 // Routes untuk Pegawai
@@ -45,28 +45,28 @@ router.post(
   "/pegawai/obat",
   authenticateToken,
   isEmployee,
-  obatController.pegawaiCRUDObat
+  obatController.pegawaiCRUDObat,
 );
 //GET -> READ
 router.get(
   "/pegawai/obat",
   authenticateToken,
   isEmployee,
-  obatController.pegawaiCRUDObat
+  obatController.pegawaiCRUDObat,
 );
 //PUT -> UPDATE
 router.put(
   "/pegawai/obat/:id",
   authenticateToken,
   isEmployee,
-  obatController.pegawaiCRUDObat
+  obatController.pegawaiCRUDObat,
 );
 //DELETE
 router.delete(
   "/pegawai/obat/:id",
   authenticateToken,
   isEmployee,
-  obatController.pegawaiCRUDObat
+  obatController.pegawaiCRUDObat,
 );
 
 // Routes untuk Pemilik
@@ -74,7 +74,7 @@ router.post(
   "/pemilik/obat",
   authenticateToken,
   isOwner,
-  obatController.pemilikReadObat
+  obatController.pemilikReadObat,
 );
 
 export default router;

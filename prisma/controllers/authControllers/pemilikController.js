@@ -118,7 +118,7 @@ const PemilikForgotPassword = async (req, res) => {
 
   if (!newPassword || (!username && !no_telp)) {
     console.log(
-      `Request failed: Missing fields. Username: ${username}, No Telp: ${no_telp}, New Password: ${newPassword}`
+      `Request failed: Missing fields. Username: ${username}, No Telp: ${no_telp}, New Password: ${newPassword}`,
     );
     return res.status(400).json({
       success: false,
@@ -134,7 +134,7 @@ const PemilikForgotPassword = async (req, res) => {
     console.log(
       `Searching for user with ${
         username ? "Username: " + username : "No Telp: " + no_telp
-      }`
+      }`,
     );
     const pemilik = await prisma.pemilik.findFirst({ where: whereCondition });
 
@@ -142,7 +142,7 @@ const PemilikForgotPassword = async (req, res) => {
       console.log(
         `User not found or incorrect details. ${
           username ? "Username: " + username : "No Telp: " + no_telp
-        }`
+        }`,
       );
       return res.status(404).json({
         success: false,
@@ -154,7 +154,7 @@ const PemilikForgotPassword = async (req, res) => {
     console.log(
       `Password hashed successfully for ${
         username ? "Username: " + username : "No Telp: " + no_telp
-      }`
+      }`,
     );
 
     await prisma.pemilik.update({
@@ -165,7 +165,7 @@ const PemilikForgotPassword = async (req, res) => {
     console.log(
       `Password updated successfully for ${
         username ? "Username: " + username : "No Telp: " + no_telp
-      }`
+      }`,
     );
     return res.status(200).json({
       success: true,

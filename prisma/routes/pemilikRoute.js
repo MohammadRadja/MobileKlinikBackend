@@ -15,28 +15,28 @@ router.post(
   "/admin/pemilik",
   authenticateToken,
   isAdmin,
-  dataPemilikController.adminCRUDDataPemilik
+  dataPemilikController.adminCRUDDataPemilik,
 );
 //GET -> READ
 router.get(
   "/admin/pemilik",
   authenticateToken,
   isAdmin,
-  dataPemilikController.adminCRUDDataPemilik
+  dataPemilikController.adminCRUDDataPemilik,
 );
 //PUT -> UPDATE
 router.put(
   "/admin/pemilik/:id",
   authenticateToken,
   isAdmin,
-  dataPemilikController.adminCRUDDataPemilik
+  dataPemilikController.adminCRUDDataPemilik,
 );
 //DELETE
 router.delete(
   "/admin/pemilik/:id",
   authenticateToken,
   isAdmin,
-  dataPemilikController.adminCRUDDataPemilik
+  dataPemilikController.adminCRUDDataPemilik,
 );
 
 // Routes untuk Pegawai
@@ -45,28 +45,28 @@ router.post(
   "/pegawai/pemilik",
   authenticateToken,
   isEmployee,
-  dataPemilikController.pegawaiCRUDDataPemilik
+  dataPemilikController.pegawaiCRUDDataPemilik,
 );
 //GET -> READ
 router.post(
   "/pegawai/pemilik",
   authenticateToken,
   isEmployee,
-  dataPemilikController.pegawaiCRUDDataPemilik
+  dataPemilikController.pegawaiCRUDDataPemilik,
 );
 //PUT -> UPDATE
 router.put(
   "/pegawai/pemilik/:id",
   authenticateToken,
   isEmployee,
-  dataPemilikController.pegawaiCRUDDataPemilik
+  dataPemilikController.pegawaiCRUDDataPemilik,
 );
 //DELETE
 router.delete(
   "/pegawai/pemilik/:id",
   authenticateToken,
   isEmployee,
-  dataPemilikController.pegawaiCRUDDataPemilik
+  dataPemilikController.pegawaiCRUDDataPemilik,
 );
 
 // Routes untuk Pemilik
@@ -75,21 +75,21 @@ router.post(
   "/pemilik/pemilik",
   authenticateToken,
   isOwner,
-  dataPemilikController.pemilikCRUDDataPemilik
+  dataPemilikController.pemilikCRUDDataPemilik,
 );
 //GET -> READ BY ID
 router.post(
   "/pemilik/pemilik/:id",
   authenticateToken,
   isOwner,
-  dataPemilikController.pemilikCRUDDataPemilik
+  dataPemilikController.pemilikCRUDDataPemilik,
 );
 //PUT -> UPDATE
 router.put(
   "/pemilik/pemilik/:id",
   authenticateToken,
   isOwner,
-  dataPemilikController.pemilikCRUDDataPemilik
+  dataPemilikController.pemilikCRUDDataPemilik,
 );
 
 export default router;

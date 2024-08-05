@@ -197,7 +197,7 @@ const dataPegawaiController = {
       console.error("Read Pegawai from pemilik - Response status: 500");
       console.error(
         "Read Pegawai from pemilik - Response body:",
-        error.message
+        error.message,
       );
       return res.status(500).json({ success: false, message: error.message });
     }

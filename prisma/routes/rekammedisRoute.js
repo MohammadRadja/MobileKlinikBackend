@@ -17,28 +17,28 @@ router.post(
   "/admin/rekammedis",
   authenticateToken,
   isAdmin,
-  rekamMedisController.adminCRUDRekamMedis
+  rekamMedisController.adminCRUDRekamMedis,
 );
 //GET -> READ
 router.post(
   "/admin/rekammedis",
   authenticateToken,
   isAdmin,
-  rekamMedisController.adminCRUDRekamMedis
+  rekamMedisController.adminCRUDRekamMedis,
 );
 //PUT -> UPDATE
 router.put(
   "/admin/rekammedis/:id",
   authenticateToken,
   isAdmin,
-  rekamMedisController.adminCRUDRekamMedis
+  rekamMedisController.adminCRUDRekamMedis,
 );
 //DELETE
 router.delete(
   "/admin/rekammedis/:id",
   authenticateToken,
   isAdmin,
-  rekamMedisController.adminCRUDRekamMedis
+  rekamMedisController.adminCRUDRekamMedis,
 );
 
 /* Routes untuk Pegawai */
@@ -47,28 +47,28 @@ router.post(
   "/pegawai/rekammedis",
   authenticateToken,
   isEmployee,
-  rekamMedisController.pegawaiCRUDRekamMedis
+  rekamMedisController.pegawaiCRUDRekamMedis,
 );
 //GET -> READ
 router.post(
   "/pegawai/rekammedis",
   authenticateToken,
   isEmployee,
-  rekamMedisController.pegawaiCRUDRekamMedis
+  rekamMedisController.pegawaiCRUDRekamMedis,
 );
 //PUT -> UPDATE
 router.put(
   "/pegawai/rekammedis/:id",
   authenticateToken,
   isEmployee,
-  rekamMedisController.pegawaiCRUDRekamMedis
+  rekamMedisController.pegawaiCRUDRekamMedis,
 );
 //DELETE
 router.delete(
   "/pegawai/rekammedis/:id",
   authenticateToken,
   isEmployee,
-  rekamMedisController.pegawaiCRUDRekamMedis
+  rekamMedisController.pegawaiCRUDRekamMedis,
 );
 
 // Routes untuk Pemilik
@@ -76,13 +76,13 @@ router.post(
   "/pemilik/rekammedis",
   authenticateToken,
   isOwner,
-  rekamMedisController.pemilikReadRekamMedis
+  rekamMedisController.pemilikReadRekamMedis,
 );
 //PUT -> UPDATE
 router.put(
   "/pemilik/rekammedis/:id",
   authenticateToken,
   isEmployee,
-  rekamMedisController.pegawaiCRUDRekamMedis
+  rekamMedisController.pegawaiCRUDRekamMedis,
 );
 export default router;

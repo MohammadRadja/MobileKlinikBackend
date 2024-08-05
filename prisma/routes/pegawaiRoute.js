@@ -15,7 +15,7 @@ router.post(
   "/admin/pegawai",
   authenticateToken,
   isAdmin,
-  dataPegawaiController.adminCRUDDataPegawai
+  dataPegawaiController.adminCRUDDataPegawai,
 );
 
 // GET -> READ
@@ -23,7 +23,7 @@ router.get(
   "/admin/pegawai",
   authenticateToken,
   isAdmin,
-  dataPegawaiController.adminCRUDDataPegawai
+  dataPegawaiController.adminCRUDDataPegawai,
 );
 
 // PUT -> UPDATE
@@ -31,7 +31,7 @@ router.put(
   "/admin/pegawai/:id",
   authenticateToken,
   isAdmin,
-  dataPegawaiController.adminCRUDDataPegawai
+  dataPegawaiController.adminCRUDDataPegawai,
 );
 
 // DELETE
@@ -39,7 +39,7 @@ router.delete(
   "/admin/pegawai/:id",
   authenticateToken,
   isAdmin,
-  dataPegawaiController.adminCRUDDataPegawai
+  dataPegawaiController.adminCRUDDataPegawai,
 );
 
 // Routes untuk Pegawai
@@ -48,7 +48,7 @@ router.post(
   "/pegawai/pegawai",
   authenticateToken,
   isEmployee,
-  dataPegawaiController.pegawaiCRUDDataPegawai
+  dataPegawaiController.pegawaiCRUDDataPegawai,
 );
 
 // PUT -> UPDATE
@@ -56,7 +56,7 @@ router.put(
   "/pegawai/pegawai/:id",
   authenticateToken,
   isEmployee,
-  dataPegawaiController.pegawaiCRUDDataPegawai
+  dataPegawaiController.pegawaiCRUDDataPegawai,
 );
 
 // Routes untuk Pemilik
@@ -65,7 +65,7 @@ router.get(
   "/pemilik/pegawai/:id",
   authenticateToken,
   isOwner,
-  dataPegawaiController.PemilikReadPegawai
+  dataPegawaiController.PemilikReadPegawai,
 );
 
 export default router;

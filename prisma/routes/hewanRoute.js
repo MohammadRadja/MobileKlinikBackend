@@ -22,7 +22,7 @@ router.post(
   logRequest,
   authenticateToken,
   isAdmin,
-  hewanController.adminCRUDHewan
+  hewanController.adminCRUDHewan,
 );
 
 // GET - READ
@@ -35,7 +35,7 @@ router.get(
   (req, res) => {
     console.log("Admin GET /admin/hewan");
     res.json({ message: "Data hewan berhasil diambil" });
-  }
+  },
 );
 
 // PUT -> EDIT
@@ -44,7 +44,7 @@ router.put(
   logRequest,
   authenticateToken,
   isAdmin,
-  hewanController.adminCRUDHewan
+  hewanController.adminCRUDHewan,
 );
 
 // DELETE
@@ -53,7 +53,7 @@ router.delete(
   logRequest,
   authenticateToken,
   isAdmin,
-  hewanController.adminCRUDHewan
+  hewanController.adminCRUDHewan,
 );
 
 /* Routes untuk Pegawai */
@@ -63,7 +63,7 @@ router.post(
   logRequest,
   authenticateToken,
   isEmployee,
-  hewanController.pegawaiCRUDHewan
+  hewanController.pegawaiCRUDHewan,
 );
 
 // GET - READ
@@ -72,7 +72,7 @@ router.post(
   logRequest,
   authenticateToken,
   isEmployee,
-  hewanController.pegawaiCRUDHewan
+  hewanController.pegawaiCRUDHewan,
 );
 
 // PUT -> EDIT
@@ -81,7 +81,7 @@ router.put(
   logRequest,
   authenticateToken,
   isEmployee,
-  hewanController.pegawaiCRUDHewan
+  hewanController.pegawaiCRUDHewan,
 );
 
 // DELETE
@@ -90,7 +90,7 @@ router.delete(
   logRequest,
   authenticateToken,
   isEmployee,
-  hewanController.pegawaiCRUDHewan
+  hewanController.pegawaiCRUDHewan,
 );
 
 /* Routes untuk Pemilik */
@@ -100,6 +100,6 @@ router.post(
   logRequest,
   authenticateToken,
   isOwner,
-  hewanController.pemilikCRUDHewan
+  hewanController.pemilikCRUDHewan,
 );
 export default router;

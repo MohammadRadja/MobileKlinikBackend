@@ -126,7 +126,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan diperbarui ditemukan:",
-            appointmentToUpdate
+            appointmentToUpdate,
           );
 
           // Perbarui data appointment
@@ -164,7 +164,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan dihapus ditemukan:",
-            appointmentToDelete
+            appointmentToDelete,
           );
 
           // Memeriksa apakah ada rekaman terkait
@@ -300,7 +300,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan diperbarui ditemukan:",
-            appointmentToUpdate
+            appointmentToUpdate,
           );
 
           // Perbarui data appointment
@@ -338,7 +338,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan dihapus ditemukan:",
-            appointmentToDelete
+            appointmentToDelete,
           );
 
           // Memeriksa apakah ada rekaman terkait
@@ -476,7 +476,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan diperbarui ditemukan:",
-            appointmentToUpdate
+            appointmentToUpdate,
           );
 
           // Perbarui data appointment
