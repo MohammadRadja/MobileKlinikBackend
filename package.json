@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
+    "build": "prisma generate",
+    "start": "node app.js",
     "seed": "node prisma/seeders/seed.js",
     "format": "prettier --write \"**/*.js\""
   },
