@@ -71,7 +71,7 @@ const registerUser = async (
   jabatan,
   alamat,
   no_telp,
-  email,
+  email
 ) => {
   const existingUser = await prisma.user.findUnique({ where: { username } });
   if (existingUser) {
@@ -122,7 +122,7 @@ const handleRegister = async (req, res) => {
       jabatan,
       alamat,
       no_telp,
-      email,
+      email
     );
     return res.status(201).json({ success: true, data: userData });
   } catch (error) {
@@ -183,7 +183,7 @@ const handleForgotPassword = async (req, res) => {
     });
 
     console.log(
-      `Password berhasil diperbarui untuk pengguna: ${user.username}`,
+      `Password berhasil diperbarui untuk pengguna: ${user.username}`
     );
     return res
       .status(200)

@@ -7,7 +7,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
+model user {
   id_user       String         @id @default(uuid()) @db.Char(36)
   username      String         @unique
   password      String
@@ -17,22 +17,22 @@ model User {
   email         String         @unique
   created_at    DateTime       @default(now())
   updated_at    DateTime       @updatedAt
-  rekam_medis   RekamMedis[]
-  hewan         Hewan[]
-  appointments  Appointment[]
-  pembayaran    Pembayaran[]
-  resep         Resep[]
+  rekam_medis   rekamMedis[]
+  hewan         hewan[]
+  appointments  appointment[]
+  pembayaran    pembayaran[]
+  resep         resep[]
 }
 
-model Dokter {
+model dokter {
   id_dokter      String         @id @default(uuid()) @db.Char(36)
   nama_dokter    String
   spesialisasi   String
-  appointments   Appointment[]
-  pembayaran     Pembayaran[]
+  appointments   appointment[]
+  pembayaran     pembayaran[]
 }
 
-model Hewan {
+model hewan {
   id_hewan      String         @id @default(uuid()) @db.Char(36)
   id_user       String
   nama_hewan    String
@@ -40,22 +40,22 @@ model Hewan {
   umur          Int
   berat         Float
   jenis_kelamin String
-  rekam_medis   RekamMedis[]
-  appointments  Appointment[]
-  pembayaran    Pembayaran[]
-  user          User?          @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
+  rekam_medis   rekamMedis[]
+  appointments  appointment[]
+  pembayaran    pembayaran[]
+  user          user?          @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Obat {
+model obat {
   id_obat       String         @id @default(uuid()) @db.Char(36)
   nama_obat     String
   keterangan    String
-  rekam_medis   RekamMedis[]
-  resep         Resep[]
-  pembayaran    Pembayaran[]
+  rekam_medis   rekamMedis[]
+  resep         resep[]
+  pembayaran    pembayaran[]
 }
 
-model RekamMedis {
+model rekamMedis {
   id_rekam_medis String         @id @default(uuid()) @db.Char(36)
   id_hewan       String
   id_user        String
@@ -63,14 +63,14 @@ model RekamMedis {
   keluhan        String
   diagnosa       String
   tgl_periksa    DateTime
-  pembayaran     Pembayaran[]
-  resep          Resep[]
-  hewan          Hewan?        @relation(fields: [id_hewan], references: [id_hewan], onDelete: Cascade, onUpdate: Cascade)
-  user           User?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
-  obat           Obat?         @relation(fields: [id_obat], references: [id_obat], onDelete: Cascade, onUpdate: Cascade)
+  pembayaran     pembayaran[]
+  resep          resep[]
+  hewan          hewan?        @relation(fields: [id_hewan], references: [id_hewan], onDelete: Cascade, onUpdate: Cascade)
+  user           user?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
+  obat           obat?         @relation(fields: [id_obat], references: [id_obat], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Pembayaran {
+model pembayaran {
   id_pembayaran   String         @id @default(uuid()) @db.Char(36)
   id_rekam_medis  String        
   id_user         String
@@ -81,36 +81,36 @@ model Pembayaran {
   id_resep        String        
   tgl_pembayaran  DateTime
   jumlah_pembayaran Float
-  rekam_medis     RekamMedis?   @relation(fields: [id_rekam_medis], references: [id_rekam_medis], onDelete: Cascade, onUpdate: Cascade)
-  user            User?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
-  hewan           Hewan?        @relation(fields: [id_hewan], references: [id_hewan], onDelete: Cascade, onUpdate: Cascade)
-  dokter          Dokter?       @relation(fields: [id_dokter], references: [id_dokter], onDelete: Cascade, onUpdate: Cascade)
-  appointment     Appointment?  @relation(fields: [id_appointment], references: [id_appointment], onDelete: Cascade, onUpdate: Cascade)
-  obat            Obat?         @relation(fields: [id_obat], references: [id_obat], onDelete: Cascade, onUpdate: Cascade)
-  resep           Resep?        @relation(fields: [id_resep], references: [id_resep], onDelete: Cascade, onUpdate: Cascade)
+  rekam_medis     rekamMedis?   @relation(fields: [id_rekam_medis], references: [id_rekam_medis], onDelete: Cascade, onUpdate: Cascade)
+  user            user?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
+  hewan           hewan?        @relation(fields: [id_hewan], references: [id_hewan], onDelete: Cascade, onUpdate: Cascade)
+  dokter          dokter?       @relation(fields: [id_dokter], references: [id_dokter], onDelete: Cascade, onUpdate: Cascade)
+  appointment     appointment?  @relation(fields: [id_appointment], references: [id_appointment], onDelete: Cascade, onUpdate: Cascade)
+  obat            obat?         @relation(fields: [id_obat], references: [id_obat], onDelete: Cascade, onUpdate: Cascade)
+  resep           resep?        @relation(fields: [id_resep], references: [id_resep], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Resep {
+model resep {
   id_resep       String         @id @default(uuid()) @db.Char(36)
   id_user        String
   id_rekam_medis String
   id_obat        String
   jumlah_obat    Int
-  pembayaran     Pembayaran[]
-  user           User?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
-  rekam_medis    RekamMedis?   @relation(fields: [id_rekam_medis], references: [id_rekam_medis], onDelete: Cascade, onUpdate: Cascade)
-  obat           Obat?         @relation(fields: [id_obat], references: [id_obat], onDelete: Cascade, onUpdate: Cascade)
+  pembayaran     pembayaran[]
+  user           user?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
+  rekam_medis    rekamMedis?   @relation(fields: [id_rekam_medis], references: [id_rekam_medis], onDelete: Cascade, onUpdate: Cascade)
+  obat           obat?         @relation(fields: [id_obat], references: [id_obat], onDelete: Cascade, onUpdate: Cascade)
 }
 
-model Appointment {
+model appointment {
   id_appointment String         @id @default(uuid()) @db.Char(36)
   id_user        String
   id_hewan       String
   id_dokter      String
   tgl_appointment DateTime
   catatan        String?
-  pembayaran     Pembayaran[]
-  hewan          Hewan?        @relation(fields: [id_hewan], references: [id_hewan], onDelete: Cascade, onUpdate: Cascade)
-  dokter         Dokter?       @relation(fields: [id_dokter], references: [id_dokter], onDelete: Cascade, onUpdate: Cascade)
-  user          User?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
+  pembayaran     pembayaran[]
+  hewan          hewan?        @relation(fields: [id_hewan], references: [id_hewan], onDelete: Cascade, onUpdate: Cascade)
+  dokter         dokter?       @relation(fields: [id_dokter], references: [id_dokter], onDelete: Cascade, onUpdate: Cascade)
+  user           user?         @relation(fields: [id_user], references: [id_user], onDelete: Cascade, onUpdate: Cascade)
 }
