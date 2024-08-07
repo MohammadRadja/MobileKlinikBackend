@@ -1,8 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-// Fungsi untuk mengonversi format tanggal DD-MM-YYYY ke ISO-8601
 const parseDate = (dateStr) => {
+  // Jika sudah dalam format ISO-8601, langsung kembalikan
+  if (!/^\d{2}-\d{2}-\d{4}$/.test(dateStr)) {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) {
+      throw new Error(`Format tanggal tidak valid: ${dateStr}`);
+    }
+    return date.toISOString();
+  }
+
+  // Jika dalam format DD-MM-YYYY, lakukan konversi
   const [day, month, year] = dateStr.split("-");
   const date = new Date(`${year}-${month}-${day}`);
   if (isNaN(date.getTime())) {
@@ -126,7 +135,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan diperbarui ditemukan:",
-            appointmentToUpdate,
+            appointmentToUpdate
           );
 
           // Perbarui data appointment
@@ -145,41 +154,6 @@ const appointmentController = {
           break;
 
         case "delete":
-          // Validasi input untuk aksi delete
-          if (!data.id_appointment) {
-            return res
-              .status(400)
-              .json({ success: false, message: "ID Appointment hilang" });
-          }
-
-          // Memeriksa apakah rekaman ada sebelum dihapus
-          const appointmentToDelete = await prisma.appointment.findUnique({
-            where: { id_appointment: data.id_appointment }, // Gunakan string langsung
-          });
-
-          if (!appointmentToDelete) {
-            return res
-              .status(404)
-              .json({ success: false, message: "Appointment tidak ditemukan" });
-          }
-          console.log(
-            "Appointment yang akan dihapus ditemukan:",
-            appointmentToDelete,
-          );
-
-          // Memeriksa apakah ada rekaman terkait
-          const relatedRecords = await prisma.pembayaran.findMany({
-            where: { id_appointment: data.id_appointment }, // Gunakan string langsung
-          });
-
-          if (relatedRecords.length > 0) {
-            return res.status(400).json({
-              success: false,
-              message:
-                "Tidak dapat menghapus appointment dengan rekaman terkait",
-            });
-          }
-
           // Menghapus appointment
           result = await prisma.appointment.delete({
             where: { id_appointment: data.id_appointment }, // Gunakan string langsung
@@ -300,7 +274,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan diperbarui ditemukan:",
-            appointmentToUpdate,
+            appointmentToUpdate
           );
 
           // Perbarui data appointment
@@ -338,7 +312,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan dihapus ditemukan:",
-            appointmentToDelete,
+            appointmentToDelete
           );
 
           // Memeriksa apakah ada rekaman terkait
@@ -476,7 +450,7 @@ const appointmentController = {
           }
           console.log(
             "Appointment yang akan diperbarui ditemukan:",
-            appointmentToUpdate,
+            appointmentToUpdate
           );
 
           // Perbarui data appointment
