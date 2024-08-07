@@ -18,6 +18,9 @@
   "build": {
     "env": {
       "DATABASE_URL": "mysql://u265582689_Klinikhewan:@Klinik1234@auth-db1151.hstgr.io:3306/u265582689_Klinikhewan"
+    },
+    "commands": {
+      "build": "npm run build"
     }
   }
 }
